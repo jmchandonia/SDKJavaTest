@@ -1,0 +1,36 @@
+#
+# define display information
+#
+name: SDK Java Test
+tooltip: |
+    Tests Java Apps in SDK
+screenshots: []
+
+icon: icon.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    num_seconds :
+        ui-name : |
+            Test
+        short-hint : |
+            Test
+description : |
+    <p>This is a simple method designed to illustrate the KBase SDK.</p>

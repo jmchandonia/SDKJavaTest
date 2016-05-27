@@ -1,0 +1,50 @@
+{
+    "ver": "0.0.1",
+    "authors": [
+        "jmc"
+    ],
+    "contact": "help@kbase.us",
+    "visible": true,
+    "categories": ["active"],
+    "widgets": {
+        "input": null,
+        "output": null
+    },
+    "parameters": [ 
+        {
+            "id": "num_seconds",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "60" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int"
+            }
+        }
+    ],
+    "behavior": {
+        "service-mapping": {
+            "url": "",
+            "name": "SDKJavaTest",
+            "method": "version",
+            "input_mapping": [
+                {
+                    "narrative_system_variable": "workspace",
+                    "target_property": "ws"
+                },
+                {
+                    "input_parameter": "num_seconds",
+                    "target_property": "num_seconds"
+                }
+            ],
+            "output_mapping": [
+                {
+                    "service_method_output_path": [0],
+                    "target_property": "output"
+                }
+            ]
+        }
+    },
+    "job_id_output_field": "docker"
+}
