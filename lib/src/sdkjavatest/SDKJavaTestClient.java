@@ -16,7 +16,8 @@ import us.kbase.common.service.UnauthorizedException;
  * <p>Original spec-file module name: SDKJavaTest</p>
  * <pre>
  * A KBase module: SDKJavaTest
- * This sample module contains one small method - filter_contigs.
+ * This module should help debug why RBTnSeq crashes in the
+ * development environment
  * </pre>
  */
 public class SDKJavaTestClient {
@@ -140,20 +141,20 @@ public class SDKJavaTestClient {
     }
 
     /**
-     * <p>Original spec-file function name: filter_contigs</p>
+     * <p>Original spec-file function name: version</p>
      * <pre>
-     * Filter contigs in a ContigSet by DNA length
+     * waits, then returns version number of service
      * </pre>
-     * @param   params   instance of type {@link sdkjavatest.FilterContigsParams FilterContigsParams}
-     * @return   instance of type {@link sdkjavatest.FilterContigsResults FilterContigsResults}
+     * @param   input   instance of type {@link sdkjavatest.VersionInput VersionInput}
+     * @return   parameter "output" of type {@link sdkjavatest.VersionOutput VersionOutput}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public FilterContigsResults filterContigs(FilterContigsParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public VersionOutput version(VersionInput input, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
-        args.add(params);
-        TypeReference<List<FilterContigsResults>> retType = new TypeReference<List<FilterContigsResults>>() {};
-        List<FilterContigsResults> res = caller.jsonrpcCall("SDKJavaTest.filter_contigs", args, retType, true, true, jsonRpcContext);
+        args.add(input);
+        TypeReference<List<VersionOutput>> retType = new TypeReference<List<VersionOutput>>() {};
+        List<VersionOutput> res = caller.jsonrpcCall("SDKJavaTest.version", args, retType, true, true, jsonRpcContext);
         return res.get(0);
     }
 }

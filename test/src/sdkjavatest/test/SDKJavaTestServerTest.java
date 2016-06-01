@@ -14,9 +14,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import sdkjavatest.FilterContigsParams;
-import sdkjavatest.FilterContigsResults;
-import sdkjavatest.SDKJavaTestServer;
+import sdkjavatest.*;
 import us.kbase.auth.AuthToken;
 import us.kbase.common.service.JsonServerSyslog;
 import us.kbase.common.service.RpcContext;
@@ -78,59 +76,10 @@ public class SDKJavaTestServerTest {
     }
     
     @Test
-    public void testFilterContigsOk() throws Exception {
-        String objName = "contigset.1";
-        Map<String, Object> contig1 = new LinkedHashMap<String, Object>();
-        contig1.put("id", "1");
-        contig1.put("length", 10);
-        contig1.put("md5", "md5");
-        contig1.put("sequence", "agcttttcat");
-        Map<String, Object> contig2 = new LinkedHashMap<String, Object>();
-        contig2.put("id", "2");
-        contig2.put("length", 5);
-        contig2.put("md5", "md5");
-        contig2.put("sequence", "agctt");
-        Map<String, Object> contig3 = new LinkedHashMap<String, Object>();
-        contig3.put("id", "3");
-        contig3.put("length", 12);
-        contig3.put("md5", "md5");
-        contig3.put("sequence", "agcttttcatgg");
-        Map<String, Object> obj = new LinkedHashMap<String, Object>();
-        obj.put("contigs", Arrays.asList(contig1, contig2, contig3));
-        obj.put("id", "id");
-        obj.put("md5", "md5");
-        obj.put("name", "name");
-        obj.put("source", "source");
-        obj.put("source_id", "source_id");
-        obj.put("type", "type");
-        wsClient.saveObjects(new SaveObjectsParams().withWorkspace(getWsName()).withObjects(Arrays.asList(
-                new ObjectSaveData().withType("KBaseGenomes.ContigSet").withName(objName).withData(new UObject(obj)))));
-        FilterContigsResults ret = impl.filterContigs(new FilterContigsParams().withWorkspace(getWsName())
-                .withContigsetId(objName).withMinLength(10L), token, getContext());
-        //Assert.assertEquals(1L, (long)ret.getContigCount());
-        Assert.assertEquals(3L, (long)ret.getNInitialContigs());
-        Assert.assertEquals(1L, (long)ret.getNContigsRemoved());
-        Assert.assertEquals(2L, (long)ret.getNContigsRemaining());
-        try {
-            impl.filterContigs(new FilterContigsParams().withWorkspace(getWsName())
-                .withContigsetId(objName), token, getContext());
-            Assert.fail("Error is expected above");
-        } catch (Exception ex) {
-            Assert.assertEquals("Parameter min_length is not set in input arguments", ex.getMessage());
-        }
-        try {
-            impl.filterContigs(new FilterContigsParams().withWorkspace(getWsName())
-                .withContigsetId(objName).withMinLength(-10L), token, getContext());
-            Assert.fail("Error is expected above");
-        } catch (Exception ex) {
-            Assert.assertEquals("min_length parameter shouldn't be negative (-10)", ex.getMessage());
-        }
-        try {
-            impl.filterContigs(new FilterContigsParams().withWorkspace(getWsName())
-                .withContigsetId("fake").withMinLength(10L), token, getContext());
-            Assert.fail("Error is expected above");
-        } catch (Exception ex) {
-            Assert.assertEquals("Error loading original ContigSet object from workspace", ex.getMessage());
-        }
+    public void testVersionOk() throws Exception {
+        VersionInput input = new VersionInput()
+            .withWs(getWsName())
+            .withNumSeconds(60L);
+        impl.version(input, token, getContext());
     }
 }
