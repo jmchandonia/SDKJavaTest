@@ -19,12 +19,8 @@ import us.kbase.auth.AuthToken;
 import us.kbase.common.service.JsonServerSyslog;
 import us.kbase.common.service.RpcContext;
 import us.kbase.common.service.UObject;
-import us.kbase.workspace.CreateWorkspaceParams;
-import us.kbase.workspace.ObjectSaveData;
-import us.kbase.workspace.ProvenanceAction;
-import us.kbase.workspace.SaveObjectsParams;
-import us.kbase.workspace.WorkspaceClient;
-import us.kbase.workspace.WorkspaceIdentity;
+import us.kbase.workspace.*;
+import us.kbase.kbasereport.*;
 
 public class SDKJavaTestServerTest {
     private static AuthToken token = null;
@@ -77,9 +73,14 @@ public class SDKJavaTestServerTest {
     
     @Test
     public void testVersionOk() throws Exception {
-        VersionInput input = new VersionInput()
-            .withWs(getWsName())
-            .withNumSeconds(60L);
-        impl.version(input, token, getContext());
+        VersionOutput rv = impl.version(new VersionInput()
+                                        .withWs(getWsName())
+                                        .withNumSeconds(60L),
+                                        token, getContext());
+        String reportRef = rv.getReportRef();
+        Assert.assertNotNull(reportRef);
+        Report report = wsClient.getObjects(Arrays.asList(new ObjectIdentity().withRef(reportRef))).get(0).getData().asClassInstance(us.kbase.kbasereport.Report.class);
+        Assert.assertNotNull(report);
+        System.out.println(report.getTextMessage());
     }
 }
