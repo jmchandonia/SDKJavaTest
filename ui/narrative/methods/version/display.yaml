@@ -29,8 +29,8 @@ suggestions:
 parameters :
     num_seconds :
         ui-name : |
-            Test
+            Num seconds
         short-hint : |
-            Test
+            Number of seconds to wait for before returning.
 description : |
     <p>This is a simple method designed to illustrate the KBase SDK.</p>
