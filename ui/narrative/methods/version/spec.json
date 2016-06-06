@@ -11,6 +11,17 @@
 	"output": "kbaseReportView"
     },
     "parameters": [ 
+	{
+	    "id": "input_read_library",
+	    "optional": false,
+	    "advanced": false,
+	    "allow_multiple": false,
+	    "default_values": [ "" ],
+	    "field_type": "text",
+	    "text_options": {
+		"valid_ws_types": ["KBaseAssembly.SingleEndLibrary", "KBaseFile.SingleEndLibrary"]
+	    }
+	},
         {
             "id": "num_seconds",
             "optional": false,
@@ -32,6 +43,10 @@
                 {
                     "narrative_system_variable": "workspace",
                     "target_property": "ws"
+                },
+                {
+                    "input_parameter": "input_read_library",
+                    "target_property": "input_read_library"
                 },
                 {
                     "input_parameter": "num_seconds",

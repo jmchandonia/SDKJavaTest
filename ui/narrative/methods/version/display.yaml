@@ -12,25 +12,31 @@ icon: icon.png
 # define a set of similar methods that might be useful to the user
 #
 suggestions:
-    apps:
-        related:
-            []
-        next:
-            []
-    methods:
-        related:
-            []
-        next:
-            []
+  apps:
+    related:
+      []
+    next:
+      []
+  methods:
+    related:
+      []
+    next:
+      []
 
 #
 # Configure the display and description of parameters
 #
 parameters :
-    num_seconds :
-        ui-name : |
-            Num seconds
-        short-hint : |
-            Number of seconds to wait for before returning.
+  input_read_library :
+    ui-name : |
+      Read Library Object
+    short-hint : |
+      Reads to test Shock retrieval in Java
+  num_seconds :
+    ui-name : |
+      Num seconds
+    short-hint : |
+      Number of seconds to wait for before returning
+
 description : |
     <p>This is a simple method designed to illustrate the KBase SDK.</p>

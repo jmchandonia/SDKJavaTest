@@ -9,6 +9,7 @@ module SDKJavaTest {
      /* version is input a number of seconds to run for */
      typedef structure {
          string ws;
+         string input_read_library;
          int num_seconds;
      } VersionInput;
 
