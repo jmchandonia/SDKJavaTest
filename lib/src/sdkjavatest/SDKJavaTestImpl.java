@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.nio.charset.*;
 import java.util.*;
+import java.util.zip.*;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 
@@ -83,15 +84,17 @@ public class SDKJavaTestImpl {
                                  AuthToken token,
                                  File f,
                                  boolean gzip) throws Exception {
-        String url = h.getUrl()+"/node/"+h.getId()+"?download";
 
-        // needs authenticated shock download
-        ProcessBuilder pb =
-            new ProcessBuilder("/bin/bash",
-                               "-c",
-                               "/usr/bin/curl -k -X GET "+url+" -H \"Authorization: OAuth "+token.toString()+"\""+(gzip ? "| /bin/gzip" : ""));
-        pb.redirectOutput(Redirect.to(f));
-        pb.start().waitFor();
+        System.err.println("shock cmd equivalent to "+"/usr/bin/curl -k -X GET "+h.getUrl()+" -H \"Authorization: OAuth "+token.toString()+"\""+(gzip ? "| /bin/gzip" : ""));
+        
+        BasicShockClient shockClient = new BasicShockClient(new URL(h.getUrl()), token);
+        ShockNode sn = shockClient.getNode(new ShockNodeId(h.getId()));
+        OutputStream os = new FileOutputStream(f);
+        if (gzip)
+            os = new GZIPOutputStream(os);
+
+        shockClient.getFile(sn,os);
+
         if (f.length()==0)
             f.delete();
 
@@ -99,6 +102,36 @@ public class SDKJavaTestImpl {
             return null;
         
         return f;
+    }
+
+    /**
+       dumps a (single end) reads object out in fastQ.gz format.  
+    */
+    public static File dumpSEReadsFASTQ(WorkspaceClient wc,
+                                        File tempDir,
+                                        String readsRef) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
+        File fastQFile = File.createTempFile("reads", ".fastq.gz", tempDir);
+        fastQFile.delete();
+
+        try {
+            us.kbase.kbaseassembly.SingleEndLibrary kasl = wc.getObjects(Arrays.asList(new ObjectIdentity().withRef(readsRef))).get(0).getData().asClassInstance(us.kbase.kbaseassembly.SingleEndLibrary.class);
+            Handle h = kasl.getHandle();
+            AuthToken token = wc.getToken();
+
+            fastQFile = fromShock(h, token, fastQFile, true);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error reading single-end library as assembly object");
+            // should try to read as KBaseFile.SingleEndLibrary here
+            e.printStackTrace();
+            // fastQFile.delete(); save for debugging
+            fastQFile = null;
+        }
+
+        return fastQFile;
     }
 
     /**
@@ -154,6 +187,11 @@ public class SDKJavaTestImpl {
 
         int numSeconds = (int)input.getNumSeconds().longValue();
         Object timer = new Object();
+
+        // turn local into absolute paths
+        String readsRef = input.getInputReadLibrary();
+        if (readsRef.indexOf("/") == -1)
+            readsRef = input.getWs()+"/"+readsRef;
         
         // for provenance
         String methodName = "SDKJavaTestImpl.run";
@@ -170,7 +208,14 @@ public class SDKJavaTestImpl {
             synchronized (timer) {
                 timer.wait(1000 * numSeconds);
             }
-            reportText += "\nDone waiting!\n";
+            // dump reads
+            File readsFile = dumpSEReadsFASTQ(wc,
+                                              tempDir,
+                                              readsRef);
+
+            reportText += "\nDumped reads file.\n";
+            readsFile.delete();
+            reportText += "\nReads file deleted.\n";
         }
         catch (Exception e) {
             reportText += "\n\nERROR: "+e.getMessage();

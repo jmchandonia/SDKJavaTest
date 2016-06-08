@@ -22,12 +22,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "ws",
+    "input_read_library",
     "num_seconds"
 })
 public class VersionInput {
 
     @JsonProperty("ws")
     private String ws;
+    @JsonProperty("input_read_library")
+    private String inputReadLibrary;
     @JsonProperty("num_seconds")
     private Long numSeconds;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -44,6 +47,21 @@ public class VersionInput {
 
     public VersionInput withWs(String ws) {
         this.ws = ws;
+        return this;
+    }
+
+    @JsonProperty("input_read_library")
+    public String getInputReadLibrary() {
+        return inputReadLibrary;
+    }
+
+    @JsonProperty("input_read_library")
+    public void setInputReadLibrary(String inputReadLibrary) {
+        this.inputReadLibrary = inputReadLibrary;
+    }
+
+    public VersionInput withInputReadLibrary(String inputReadLibrary) {
+        this.inputReadLibrary = inputReadLibrary;
         return this;
     }
 
@@ -74,7 +92,7 @@ public class VersionInput {
 
     @Override
     public String toString() {
-        return ((((((("VersionInput"+" [ws=")+ ws)+", numSeconds=")+ numSeconds)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("VersionInput"+" [ws=")+ ws)+", inputReadLibrary=")+ inputReadLibrary)+", numSeconds=")+ numSeconds)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

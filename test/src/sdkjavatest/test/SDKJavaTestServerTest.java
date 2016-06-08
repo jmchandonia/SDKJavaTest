@@ -74,7 +74,8 @@ public class SDKJavaTestServerTest {
     @Test
     public void testVersionOk() throws Exception {
         VersionOutput rv = impl.version(new VersionInput()
-                                        .withWs(getWsName())
+                                        .withWs("jmc:1464977088598")
+                                        .withInputReadLibrary("GBVT07A")
                                         .withNumSeconds(60L),
                                         token, getContext());
         String reportRef = rv.getReportRef();
