@@ -1,6 +1,8 @@
 package sdkjavatest;
 
 import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import us.kbase.auth.AuthToken;
 import us.kbase.common.service.JsonServerMethod;
 import us.kbase.common.service.JsonServerServlet;
@@ -35,6 +37,9 @@ import us.kbase.workspace.WorkspaceClient;
  */
 public class SDKJavaTestServer extends JsonServerServlet {
     private static final long serialVersionUID = 1L;
+    private static final String version = "0.0.1";
+    private static final String gitUrl = "git@github.com:jmchandonia/SDKJavaTest.git";
+    private static final String gitCommitHash = "ddff443c9939f69131c66c3fd4bb5a613ac80f26";
 
     //BEGIN_CLASS_HEADER
     private final String wsUrl;
@@ -63,6 +68,19 @@ public class SDKJavaTestServer extends JsonServerServlet {
         //BEGIN version
         returnVal = SDKJavaTestImpl.run(wsUrl,shockUrl,authPart,input);
         //END version
+        return returnVal;
+    }
+    @JsonServerMethod(rpc = "SDKJavaTest.status")
+    public Map<String, Object> status() {
+        Map<String, Object> returnVal = null;
+        //BEGIN_STATUS
+        returnVal = new LinkedHashMap<String, Object>();
+        returnVal.put("state", "OK");
+        returnVal.put("message", "");
+        returnVal.put("version", version);
+        returnVal.put("git_url", gitUrl);
+        returnVal.put("git_commit_hash", gitCommitHash);
+        //END_STATUS
         return returnVal;
     }
 
