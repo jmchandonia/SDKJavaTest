@@ -44,6 +44,10 @@ compile:
 	$(ANT) war -Djars.dir=$(JARS_DIR)
 	chmod +x $(SCRIPTS_DIR)/entrypoint.sh
 
+build:
+	$(ANT) war -Djars.dir=$(JARS_DIR)
+	chmod +x $(SCRIPTS_DIR)/entrypoint.sh
+
 build-executable-script:
 	mkdir -p $(LBIN_DIR)
 	$(ANT) build-executable-script -Djars.dir=$(JARS_DIR) -Dexec.cmd.file=$(EXECUTABLE_SCRIPT_NAME)
