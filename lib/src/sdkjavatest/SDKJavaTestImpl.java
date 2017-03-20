@@ -209,6 +209,7 @@ public class SDKJavaTestImpl {
                 timer.wait(1000 * numSeconds);
             }
             // dump reads
+            /*
             File readsFile = dumpSEReadsFASTQ(wc,
                                               tempDir,
                                               readsRef);
@@ -216,6 +217,7 @@ public class SDKJavaTestImpl {
             reportText += "\nDumped reads file.\n";
             readsFile.delete();
             reportText += "\nReads file deleted.\n";
+            */
         }
         catch (Exception e) {
             reportText += "\n\nERROR: "+e.getMessage();

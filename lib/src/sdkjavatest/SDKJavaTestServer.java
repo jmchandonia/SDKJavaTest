@@ -39,7 +39,7 @@ public class SDKJavaTestServer extends JsonServerServlet {
     private static final long serialVersionUID = 1L;
     private static final String version = "0.0.1";
     private static final String gitUrl = "git@github.com:jmchandonia/SDKJavaTest.git";
-    private static final String gitCommitHash = "ddff443c9939f69131c66c3fd4bb5a613ac80f26";
+    private static final String gitCommitHash = "e163d8dc8adcf1f2d8b1a55543a627634c90380d";
 
     //BEGIN_CLASS_HEADER
     private final String wsUrl;
